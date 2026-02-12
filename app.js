@@ -36,11 +36,15 @@ var selectedMonth = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded fired');
-    checkTimeResets();
-    initializeData();
-    setupPhotoListeners();
-    // Update countdowns every minute
-    setInterval(updateCountdowns, 60000);
+    try {
+        checkTimeResets();
+        initializeData();
+        setupPhotoListeners();
+        // Update countdowns every minute
+        setInterval(updateCountdowns, 60000);
+    } catch (e) {
+        console.error('Error during initialization:', e);
+    }
 });
 
 function checkTimeResets() {
@@ -245,11 +249,16 @@ function initializeData() {
 }
 
 function selectRole(role) {
+    alert('selectRole called with role: ' + role);
     console.log('selectRole called with role:', role);
-    if (role === 'parent') {
-        showParentLogin();
-    } else {
-        showChildLogin();
+    try {
+        if (role === 'parent') {
+            showParentLogin();
+        } else {
+            showChildLogin();
+        }
+    } catch (e) {
+        console.error('Error in selectRole:', e);
     }
 }
 
