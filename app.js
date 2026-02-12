@@ -35,6 +35,7 @@ var parentPinVerified = false;
 var selectedMonth = null;
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded fired');
     checkTimeResets();
     initializeData();
     setupPhotoListeners();
@@ -200,11 +201,14 @@ function performMonthlyReset(oldMonth) {
 }
 
 function initializeData() {
+    console.log('initializeData called');
     if (!localStorage.getItem(STORAGE_KEYS.PARENT_PIN)) {
+        console.log('Setting default parent PIN');
         localStorage.setItem(STORAGE_KEYS.PARENT_PIN, '1234');
     }
     
     if (!localStorage.getItem(STORAGE_KEYS.FAMILY_MEMBERS)) {
+        console.log('Setting default family members');
         localStorage.setItem(STORAGE_KEYS.FAMILY_MEMBERS, JSON.stringify([
             { id: 1, name: 'Hayley', role: 'child', pin: '', avatar: '👧' },
             { id: 2, name: 'Jason', role: 'child', pin: '', avatar: '👦' }
@@ -212,18 +216,22 @@ function initializeData() {
     }
     
     if (!localStorage.getItem(STORAGE_KEYS.CHORES)) {
+        console.log('Setting default chores');
         localStorage.setItem(STORAGE_KEYS.CHORES, JSON.stringify(DEFAULT_CHORES));
     }
     
     if (!localStorage.getItem(STORAGE_KEYS.PENDING_APPROVALS)) {
+        console.log('Setting default pending approvals');
         localStorage.setItem(STORAGE_KEYS.PENDING_APPROVALS, JSON.stringify([]));
     }
     
     if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
+        console.log('Setting default settings');
         localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({ apiKey: '' }));
     }
     
     if (!localStorage.getItem('fcp_bonusReasons')) {
+        console.log('Setting default bonus reasons');
         localStorage.setItem('fcp_bonusReasons', JSON.stringify([
             { id: 1, text: 'Great initiative!', amount: 15 },
             { id: 2, text: 'Very helpful attitude', amount: 15 },
@@ -233,9 +241,11 @@ function initializeData() {
             { id: 6, text: 'Act of kindness', amount: 15 }
         ]));
     }
+    console.log('initializeData completed');
 }
 
 function selectRole(role) {
+    console.log('selectRole called with role:', role);
     if (role === 'parent') {
         showParentLogin();
     } else {
@@ -278,8 +288,11 @@ function showLoginScreen() {
 }
 
 function showChildLogin() {
+    console.log('showChildLogin called');
     var familyMembers = JSON.parse(localStorage.getItem(STORAGE_KEYS.FAMILY_MEMBERS));
+    console.log('familyMembers:', familyMembers);
     var children = familyMembers.filter(function(m) { return m.role === 'child'; });
+    console.log('children found:', children);
     
     var html = '<h1>Who\'s Logging In?</h1>';
     html += '<div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 15px;">';
@@ -293,15 +306,19 @@ function showChildLogin() {
     
     html += '</div>';
     html += '<button onclick="showLoginScreen()" class="back-login-btn">← Back</button>';
+    console.log('Generated HTML:', html);
     document.querySelector('.login-container').innerHTML = html;
 }
 
 function loginChild(childId) {
+    console.log('loginChild called with childId:', childId);
     var familyMembers = JSON.parse(localStorage.getItem(STORAGE_KEYS.FAMILY_MEMBERS));
     var child = familyMembers.find(function(m) { return m.id == childId; });
+    console.log('Found child:', child);
     
     if (child) {
         currentUser = { id: child.id, name: child.name, role: 'child', avatar: child.avatar };
+        console.log('currentUser set:', currentUser);
         showMainScreen();
     }
 }
@@ -316,6 +333,7 @@ function logout() {
 }
 
 function showMainScreen() {
+    console.log('showMainScreen called');
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('main-screen').classList.remove('hidden');
     document.getElementById('user-name').textContent = currentUser.name;
